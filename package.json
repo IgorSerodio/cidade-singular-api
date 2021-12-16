@@ -14,13 +14,13 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.14",
     "mongoose-unique-validator": "^3.0.0",
-    "morgan-body": "^2.6.6"
-  },
-  "devDependencies": {
+    "morgan-body": "^2.6.6",
     "@babel/core": "^7.16.0",
     "@babel/node": "^7.16.0",
     "@babel/preset-env": "^7.16.4",
-    "babel-loader": "^8.2.3",
+    "babel-loader": "^8.2.3"
+  },
+  "devDependencies": {
     "nodemon": "^2.0.15"
   }
 }
