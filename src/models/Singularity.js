@@ -31,6 +31,10 @@ class Singularity {
                 type: String,
                 required: true,
             },
+            photos: {
+                type: [String],
+                default: []
+            },
             city: {
                 type: mongoose.Types.ObjectId,
                 required: true,
