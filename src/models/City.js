@@ -9,6 +9,7 @@ class City {
             name: {
                 type: String,
                 required: true,
+                unique: true,
             },
             description: {
                 type: String,

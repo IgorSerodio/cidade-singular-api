@@ -1,14 +1,15 @@
 import UserService from './../services/UserService';
+import Controller from './Controller';
 import { User } from './../models/User';
 
 const userService = new UserService(
     new User().getInstance()
 );
 
-class UserController {
+class UserController extends Controller {
 
     constructor(service) {
-        this.service = service;
+        super(service);
         this.createUser = this.createUser.bind(this);
         this.authenticate = this.authenticate.bind(this);
     }

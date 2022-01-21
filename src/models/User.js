@@ -4,6 +4,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import config from 'config';
 
+import { SingularityTypes } from "./Singularity";
+
 const userTypes = {
     'ADMIN': 'ADMIN',
     'MANAGER': 'MANAGER',
@@ -36,12 +38,20 @@ class User {
             type: {
                 type: String,
                 enum: Object.keys(userTypes),
-                required: true
+                default: userTypes.VISITOR,
             },
             password: {
                 type: String,
                 required: true
             },
+            curator_type: {
+                type: String,
+                enum: Object.keys(SingularityTypes)
+            },
+            city: {
+                type: mongoose.Types.ObjectId,
+                ref: 'city'
+            }
 
         }, { timestamps: true });
 
@@ -50,7 +60,7 @@ class User {
             return bcrypt.compare(candidatePassword, this.password);
         };
         schema.methods.generateToken = function () {
-            const payload = { id: this._id, type: this.type };
+            const payload = { id: this._id, type: this.type, city: this.city };
             const token = jwt.sign(payload, config.get('jwtSecret'));
 
             return token;

@@ -69,7 +69,7 @@ class Service {
 
     async update(id, data) {
         try {
-            let item = await this.model.findByIdAndUpdate(id, data, { new: true });
+            let item = await this.model.findByIdAndUpdate(id, data, { new: true, runValidators: true });
             return {
                 error: false,
                 statusCode: 202,

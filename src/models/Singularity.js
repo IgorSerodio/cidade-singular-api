@@ -1,6 +1,16 @@
 import mongoose, { Schema } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
+const SingularityTypes = {
+    "ARTS": "ARTS",
+    "CRAFTS": "CRAFTS",
+    "FILM": "FILM",
+    "DESIGN": "DESIGN",
+    "GASTRONOMY": "GASTRONOMY",
+    "LITERATURE": "LITERATURE",
+    "MUSIC": "MUSIC"
+};
+
 class Singularity {
 
     initSchema() {
@@ -31,6 +41,11 @@ class Singularity {
                 required: true,
                 ref: 'user'
             },
+            type: {
+                type: String,
+                enum: Object.keys(SingularityTypes),
+                required: true
+            }
         }, { timestamps: true });
 
         schema.plugin(uniqueValidator);
@@ -43,4 +58,4 @@ class Singularity {
     }
 }
 
-export default Singularity;
+export { Singularity, SingularityTypes };
