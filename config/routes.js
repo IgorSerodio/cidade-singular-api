@@ -20,6 +20,7 @@ export default (server) => {
 
 
     server.get('/user', UserController.getAll);
+    server.get('/user/me', UserMiddleware.authorize(), UserController.me);
     server.post('/user', UserController.createUser);
     server.post('/user/auth', UserController.authenticate);
     server.put('/user/:id', UserController.update);

@@ -46,6 +46,25 @@ class UserService extends Service {
         }
     }
 
+
+    async findById(id) {
+        try {
+            let user = await this.model.findById(id).populate('city');
+            if (user) {
+                return { error: false, user };
+            }
+
+        } catch (error) {
+            console.log('error', error);
+            return {
+                error: true,
+                statusCode: 500,
+                message: error.errmsg || 'Not able to find user',
+                errors: error.errors
+            };
+        }
+    }
+
     async createUser(data) {
         try {
             let user = await this.model.create(data);
