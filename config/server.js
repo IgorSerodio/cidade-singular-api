@@ -5,7 +5,7 @@ import setRoutes from './routes';
 
 const server = express();
 
-server.use(bodyParser.json());
+server.use(bodyParser.json({ limit: '50mb' }));
 morganBody(server, { logAllReqHeader: true, maxBodyLength: 5000 });
 
 setRoutes(server);
