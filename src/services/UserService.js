@@ -52,6 +52,12 @@ class UserService extends Service {
             let user = await this.model.findById(id).populate('city');
             if (user) {
                 return { error: false, user };
+            } else {
+                return {
+                    error: true,
+                    statusCode: 404,
+                    message: 'user not found.'
+                }
             }
 
         } catch (error) {
