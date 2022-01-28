@@ -83,6 +83,23 @@ class UserService extends Service {
         }
     }
 
+    async update(id, data) {
+        try {
+            let item = await this.model.findByIdAndUpdate(id, data, { new: true, runValidators: true }).populate('city');
+            return {
+                error: false,
+                statusCode: 202,
+                item
+            };
+        } catch (error) {
+            return {
+                error: true,
+                statusCode: 500,
+                error
+            };
+        }
+    }
+
     async authenticate(email, password) {
 
         try {

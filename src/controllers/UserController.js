@@ -1,6 +1,10 @@
 import UserService from './../services/UserService';
 import Controller from './Controller';
 import { User } from './../models/User';
+import config from 'config';
+import crypto from 'crypto';
+
+import Uploads from '../services/Upload';
 
 const userService = new UserService(
     new User().getInstance()
@@ -33,6 +37,22 @@ class UserController extends Controller {
         let response = await this.service.findById(req.user.id);
         if (response.error) return res.status(response.statusCode).send(response);
         return res.status(201).send(response);
+    }
+
+    async update(req, res) {
+        if (req.body.picture) {
+            const { id } = req.params;
+            const timestamp = Date.now();
+            const stamp = crypto
+                .randomBytes(Math.ceil(5 / 2))
+                .toString('hex')
+                .slice(0, 5) + timestamp;
+            const filename = id + stamp + '.jpg';
+            await Uploads.uploadFile(req.body.picture, id, stamp);
+            req.body.picture = 'https://s3.amazonaws.com/compcult/' + config.get('S3_FOLDER') + "/" + filename;
+        };
+
+        return super.update(req, res);
     }
 
 }
