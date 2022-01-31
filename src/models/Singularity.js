@@ -49,7 +49,9 @@ class Singularity {
                 type: String,
                 enum: Object.keys(SingularityTypes),
                 required: true
-            }
+            },
+            lat: { type: Number },
+            lng: { type: Number }
         }, { timestamps: true });
 
         schema.plugin(uniqueValidator);
