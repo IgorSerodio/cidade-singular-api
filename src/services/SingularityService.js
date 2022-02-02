@@ -8,8 +8,12 @@ class SingularityService extends Service {
     async getAll(query) {
         let { skip, limit } = query;
 
-        skip = skip ? Number(skip) : 0;
-        limit = limit ? Number(limit) : 10;
+        let paginate = false;
+        if (skip && limit) {
+            paginate = true;
+            skip = skip ? Number(skip) : 0;
+            limit = limit ? Number(limit) : 10;
+        }
 
         delete query.skip;
         delete query.limit;
@@ -23,12 +27,22 @@ class SingularityService extends Service {
         }
 
         try {
-            let items = await this.model
-                .find(query)
-                .skip(skip)
-                .limit(limit)
-                .populate('creator')
-                .populate('city');
+
+            let items = []
+
+            if (paginate) {
+                items = await this.model
+                    .find(query)
+                    .skip(skip)
+                    .limit(limit)
+                    .populate('creator')
+                    .populate('city');
+            } else {
+                items = await this.model
+                    .find(query)
+                    .populate('creator')
+                    .populate('city');
+            }
             let total = await this.model.count();
 
             return {

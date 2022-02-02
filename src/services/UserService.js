@@ -8,9 +8,13 @@ class UserService extends Service {
 
     async getAll(query) {
         let { skip, limit } = query;
+        let paginate = false;
+        if (skip && limit) {
+            paginate = true;
+            skip = skip ? Number(skip) : 0;
+            limit = limit ? Number(limit) : 10;
 
-        skip = skip ? Number(skip) : 0;
-        limit = limit ? Number(limit) : 10;
+        }
 
         delete query.skip;
         delete query.limit;
@@ -24,11 +28,23 @@ class UserService extends Service {
         }
 
         try {
-            let items = await this.model
-                .find(query)
-                .skip(skip)
-                .limit(limit)
-                .populate('city');
+
+            let items = []
+
+            if (paginate) {
+                items = await this.model
+                    .find(query)
+                    .skip(skip)
+                    .limit(limit)
+                    .populate('city');
+            } else {
+                items = await this.model
+                    .find(query)
+                    .populate('city');
+            }
+
+
+
             let total = await this.model.count();
 
             return {
