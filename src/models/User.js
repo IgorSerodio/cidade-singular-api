@@ -65,6 +65,14 @@ class User {
 
             return token;
         };
+
+        schema.methods.hashPassword = async function (pass) {
+            let salt = await bcrypt.genSalt(10);
+            let hash = await bcrypt.hash(pass, salt);
+
+            return hash;
+        }
+
         schema.pre("save", function (next) {
             const user = this
 

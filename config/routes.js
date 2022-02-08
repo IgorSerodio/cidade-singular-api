@@ -25,5 +25,6 @@ export default (server) => {
     server.post('/user/auth', UserController.authenticate);
     server.put('/user/:id', UserController.update);
     server.delete('/user/:id', UserMiddleware.authorize(userTypes.ADMIN), UserController.delete);
+    server.post('/user/recovery/:email', UserController.recovery);
 
 }

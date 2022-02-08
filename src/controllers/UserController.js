@@ -16,8 +16,8 @@ class UserController extends Controller {
         super(service);
         this.createUser = this.createUser.bind(this);
         this.authenticate = this.authenticate.bind(this);
+        this.recovery = this.recovery.bind(this);
         this.me = this.me.bind(this);
-
     }
 
     async createUser(req, res) {
@@ -53,6 +53,14 @@ class UserController extends Controller {
         };
 
         return super.update(req, res);
+    }
+
+    async recovery(req, res) {
+        let { email } = req.params;
+        let newPassword = crypto.randomBytes(4).toString('hex').slice(0, 4);
+        let response = await this.service.recovery(email, newPassword);
+        if (response.error) return res.status(response.statusCode).send(response);
+        return res.status(201).send(response);
     }
 
 }

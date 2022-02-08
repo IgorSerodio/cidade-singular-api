@@ -1,5 +1,6 @@
 import Service from './Service';
 import bcrypt from 'bcrypt';
+import MailService from './MailService';
 
 class UserService extends Service {
     constructor(model) {
@@ -151,6 +152,45 @@ class UserService extends Service {
                 error: true,
                 statusCode: 500,
                 message: error.errmsg || 'Not able to authenticate user',
+                errors: error.errors
+            };
+        }
+    }
+
+    async recovery(email, newPassword) {
+
+        try {
+            let user = await this.model.findOne({ 'email': email });
+            if (!user) {
+                return {
+                    error: true,
+                    statusCode: 404,
+                    message: 'user not found.'
+                };
+            }
+            let pass = await user.hashPassword(newPassword);
+
+            await this.model.findByIdAndUpdate(user._id, { password: pass }, { new: true, runValidators: true });
+
+            MailService.sendMail(email, "Cidade Singular - Recuperação de senha",
+                `Sua nova senha é
+                <h1><b>${newPassword}</b></h1><br>
+                Recomendamos alterar a senha assim que entrar no aplicativo, nas configurações de perfil.<br><br>
+                --<br>
+                Atenciosamente,<br>
+                Equipe Compcult
+                `
+            );
+
+            return { error: false, emailSent: true };
+
+
+        } catch (error) {
+            console.log('error', error);
+            return {
+                error: true,
+                statusCode: 500,
+                message: error.errmsg || 'Not able to recovery password',
                 errors: error.errors
             };
         }
