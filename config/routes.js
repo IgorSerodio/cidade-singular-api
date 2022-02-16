@@ -14,6 +14,7 @@ export default (server) => {
     server.delete('/singularity/:id', UserMiddleware.authorize(userTypes.CURATOR), SingularityController.delete);
 
     server.get('/city', CityController.getAll);
+    server.get('/city/:id', CityController.getCity);
     server.post('/city', UserMiddleware.authorize(userTypes.ADMIN), CityController.insert)
     server.put('/city/:id', UserMiddleware.authorize(userTypes.ADMIN), CityController.update);
     server.delete('/city/:id', UserMiddleware.authorize(userTypes.ADMIN), CityController.delete);
