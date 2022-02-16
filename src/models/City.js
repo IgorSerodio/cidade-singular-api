@@ -6,19 +6,23 @@ class City {
 
     initSchema() {
         const schema = new Schema({
-            name: {
+            title: {
                 type: String,
                 required: true,
                 unique: true,
             },
+            blazon: String,
+            subtitle: String,
             description: {
                 type: String,
                 required: true,
             },
-            picture: {
-                type: String,
-                required: true,
+            pictures: {
+                type: [String],
+                default: []
             },
+            lat: Number,
+            lng: Number
 
         }, { timestamps: true });
 
