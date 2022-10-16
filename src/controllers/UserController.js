@@ -49,7 +49,7 @@ class UserController extends Controller {
                 .slice(0, 5) + timestamp;
             const filename = id + stamp + '.jpg';
             await Uploads.uploadFile(req.body.picture, id, stamp);
-            req.body.picture = 'https://s3.amazonaws.com/compcult/' + config.get('S3_FOLDER') + "/" + filename;
+            req.body.picture = 'https://s3.amazonaws.com/' + config.get('S3_BUCKET') + '/' + config.get('S3_FOLDER') + "/" + filename;
         };
 
         return super.update(req, res);
