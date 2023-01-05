@@ -32,7 +32,7 @@ class SingularityController extends Controller {
                     .slice(0, 5) + timestamp;
                 const filename = req.user.id + stamp + '.jpg';
 
-                photos.push('https://s3.amazonaws.com/' + config.get('S3_BUCKET') + "/" + config.get('S3_FOLDER') + "/" + filename);
+                photos.push('https://' + config.get('S3_BUCKET') + '.s3.' + config.get('S3_REGION') + '.amazonaws.com/' + config.get('S3_FOLDER') + '/' + filename);
                 return Uploads.uploadFile(image, req.user.id, stamp);
             }));
 
