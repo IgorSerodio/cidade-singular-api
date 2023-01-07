@@ -51,8 +51,11 @@ class User {
             city: {
                 type: mongoose.Types.ObjectId,
                 ref: 'city'
-            }
-
+            },
+            xp: {
+                type: Number,
+                required: false,
+            },
         }, { timestamps: true });
 
         schema.plugin(uniqueValidator);
