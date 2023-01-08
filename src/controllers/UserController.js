@@ -18,6 +18,8 @@ class UserController extends Controller {
         this.authenticate = this.authenticate.bind(this);
         this.recovery = this.recovery.bind(this);
         this.me = this.me.bind(this);
+        this.addXp = this.addXp.bind(this);
+        this.update = this.update.bind(this);
     }
 
     async createUser(req, res) {
@@ -63,6 +65,15 @@ class UserController extends Controller {
         return res.status(201).send(response);
     }
 
+    async addXp(req, res){
+        const { id } = req.params;
+
+        let response = await this.service.findById(id);
+        let userPoints = response.user.xp;
+        
+        req.body.xp = req.body.xp += userPoints;
+        return super.update(req, res);
+    }
 }
 
 export default new UserController(userService);
