@@ -40,6 +40,7 @@ class ReviewService extends Service {
             } else {
                 items = await this.model
                     .find(query)
+                    .sort({'updatedAt': 'desc'})
                     .populate('singularity')
                     .populate('creator');
             }
