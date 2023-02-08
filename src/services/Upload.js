@@ -14,7 +14,7 @@ class Uploads {
         var filename = config.get('S3_FOLDER') + "/" + _user + stamp + '.jpg';
 
         var params = {
-            Bucket: 'compcult',
+            Bucket: config.get('S3_BUCKET'),
             Key: filename,
             Body: buffer,
             ACL: 'public-read',
@@ -30,7 +30,7 @@ class Uploads {
         var filename = config.get('S3_FOLDER') + _user + stamp + '.wav';
 
         var params = {
-            Bucket: 'compcult',
+            Bucket: config.get('S3_BUCKET'),
             Key: filename,
             Body: buffer,
             ACL: 'public-read',
@@ -49,7 +49,7 @@ class Uploads {
         var filename = config.get('S3_FOLDER') + _user + stamp + '.mp4';
 
         var params = {
-            Bucket: 'compcult',
+            Bucket: config.get('S3_BUCKET'),
             Key: filename,
             Body: buffer,
             ACL: 'public-read',

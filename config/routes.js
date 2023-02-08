@@ -1,6 +1,8 @@
 import SingularityController from './../src/controllers/SingularityController';
 import CityController from '../src/controllers/CityController';
 import UserController from '../src/controllers/UserController';
+import ReviewController from '../src/controllers/ReviewController';
+
 import UserMiddleware from '../src/middlewares/UserMiddleware';
 import { userTypes } from '../src/models/User';
 
@@ -27,5 +29,10 @@ export default (server) => {
     server.put('/user/:id', UserController.update);
     server.delete('/user/:id', UserMiddleware.authorize(userTypes.ADMIN), UserController.delete);
     server.post('/user/recovery/:email', UserController.recovery);
+    server.put('/user/addxp/:id', UserController.addXp);
 
+    server.get('/review', ReviewController.getAll);
+    server.post('/review', ReviewController.insert)
+    server.put('/review/:id', ReviewController.update);
+    server.delete('/review/:id', ReviewController.delete);
 }

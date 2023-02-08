@@ -18,6 +18,8 @@ class UserController extends Controller {
         this.authenticate = this.authenticate.bind(this);
         this.recovery = this.recovery.bind(this);
         this.me = this.me.bind(this);
+        this.addXp = this.addXp.bind(this);
+        this.update = this.update.bind(this);
     }
 
     async createUser(req, res) {
@@ -49,7 +51,7 @@ class UserController extends Controller {
                 .slice(0, 5) + timestamp;
             const filename = id + stamp + '.jpg';
             await Uploads.uploadFile(req.body.picture, id, stamp);
-            req.body.picture = 'https://s3.amazonaws.com/compcult/' + config.get('S3_FOLDER') + "/" + filename;
+            req.body.picture = 'https://' + config.get('S3_BUCKET') + '.s3.' + config.get('S3_REGION') + '.amazonaws.com/' + config.get('S3_FOLDER') + '/' + filename;
         };
 
         return super.update(req, res);
@@ -63,6 +65,15 @@ class UserController extends Controller {
         return res.status(201).send(response);
     }
 
+    async addXp(req, res){
+        const { id } = req.params;
+
+        let response = await this.service.findById(id);
+        let userPoints = response.user.xp;
+        
+        req.body.xp = req.body.xp += userPoints;
+        return super.update(req, res);
+    }
 }
 
 export default new UserController(userService);
