@@ -52,6 +52,14 @@ class User {
                 type: mongoose.Types.ObjectId,
                 ref: 'city'
             },
+            accessories: {
+                type: [String],
+                default: []
+            },
+            equipped: {
+                type: [String],
+                default: ["none", "none", "none"]
+            },
             xp: {
                 type: Number,
                 required: false,
