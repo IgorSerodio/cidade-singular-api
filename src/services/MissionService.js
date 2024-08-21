@@ -5,7 +5,7 @@ class MissionService extends Service {
         super(model);
     }
 
-    async findByTags(tags) {
+    async findByTagsAndCity(tags, cityId) {
         try {
             if (!Array.isArray(tags) || tags.length === 0) {
                 return {
@@ -15,7 +15,16 @@ class MissionService extends Service {
                 };
             }
 
+            if (!cityId) {
+                return {
+                    error: true,
+                    statusCode: 400,
+                    message: 'City ID is required.'
+                };
+            }
+
             const missions = await this.model.find({
+                city: cityId,
                 tags: { $in: tags }
             });
 
@@ -29,7 +38,7 @@ class MissionService extends Service {
                 return {
                     error: true,
                     statusCode: 404,
-                    message: 'No missions found with the provided tags.'
+                    message: 'No missions found with the provided tags and city.'
                 };
             }
         } catch (error) {
