@@ -25,7 +25,13 @@ class MissionService extends Service {
 
             const missions = await this.model.find({
                 city: cityId,
-                tags: { $in: tags }
+                tags: {
+                    $not: {
+                        $elemMatch: {
+                            $nin: tags
+                        }
+                    }
+                }
             });
 
             if (missions.length > 0) {
@@ -39,6 +45,44 @@ class MissionService extends Service {
                     error: true,
                     statusCode: 404,
                     message: 'No missions found with the provided tags and city.'
+                };
+            }
+        } catch (error) {
+            console.log('error', error);
+            return {
+                error: true,
+                statusCode: 500,
+                message: error.message || 'Not able to find missions',
+                errors: error.errors
+            };
+        }
+    }
+
+    async findByIds(ids) {
+        try {
+            if (!Array.isArray(ids) || ids.length === 0) {
+                return {
+                    error: true,
+                    statusCode: 400,
+                    message: 'IDs should be a non-empty array.'
+                };
+            }
+
+            const missions = await this.model.find({
+                _id: { $in: ids }
+            });
+
+            if (missions.length > 0) {
+                return {
+                    error: false,
+                    statusCode: 200,
+                    data: missions
+                };
+            } else {
+                return {
+                    error: true,
+                    statusCode: 404,
+                    message: 'No missions found with the provided IDs.'
                 };
             }
         } catch (error) {
