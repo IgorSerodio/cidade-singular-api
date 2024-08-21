@@ -23,8 +23,8 @@
     "nodemailer": "^6.7.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.9",
-    "@babel/node": "^7.22.6",
+    "@babel/core": "^7.25.2",
+    "@babel/node": "^7.25.0",
     "nodemon": "^2.0.15"
   }
 }
