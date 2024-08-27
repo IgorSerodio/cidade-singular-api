@@ -16,6 +16,18 @@ const userTypes = {
 class User {
 
     initSchema() {
+        const progressSchema = new Schema({
+            missionId: {
+                type: mongoose.Types.ObjectId,
+                ref: 'mission',
+                required: true
+            },
+            value: {
+                type: Number,
+                default: 0,
+            }
+        });
+        
         const schema = new Schema({
             email: {
                 type: String,
@@ -59,6 +71,10 @@ class User {
             equipped: {
                 type: [String],
                 default: ["none", "none", "none"]
+            },
+            progress: {
+                type: [progressSchema],
+                default: []
             },
             xp: {
                 type: Number,
