@@ -7,7 +7,6 @@
     "dev": "clear; nodemon --exec babel-node index.js"
   },
   "dependencies": {
-    "@babel/preset-env": "^7.16.4",
     "aws-sdk": "^2.1061.0",
     "babel-loader": "^8.2.3",
     "bcrypt": "^5.0.1",
@@ -23,8 +22,10 @@
     "nodemailer": "^6.7.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.24.8",
     "@babel/core": "^7.25.2",
     "@babel/node": "^7.25.0",
+    "@babel/preset-env": "^7.25.4",
     "nodemon": "^2.0.15"
   }
 }

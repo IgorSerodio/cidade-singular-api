@@ -15,7 +15,8 @@ class MissionController extends Controller {
     }
 
     async getMissionByTagsAndCity(req, res) {
-        const { tags, cityId } = req.body;
+        const { cityId } = req.params;
+        const { tags } = req.body;
         let response = await this.service.findByTagsAndCity(tags, cityId);
         if (response.error) return res.status(response.statusCode).send(response);
         return res.status(200).send(response);
