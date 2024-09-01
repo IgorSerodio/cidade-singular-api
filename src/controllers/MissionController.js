@@ -1,10 +1,7 @@
 import Controller from './Controller';
-import MissionService from './../services/MissionService';
-import Mission from './../models/Mission';
+import missionServiceInstance from './../services/MissionService';
 
-const missionService = new MissionService(
-    new Mission().getInstance()
-);
+const missionService = missionServiceInstance;
 
 class MissionController extends Controller {
 
@@ -14,17 +11,9 @@ class MissionController extends Controller {
         this.getMissionsByIds = this.getMissionsByIds.bind(this);
     }
 
-    async getMissionByTagsAndCity(req, res) {
+    async getMissionsByCity(req, res) {
         const { cityId } = req.params;
-        const { tags } = req.body;
-        let response = await this.service.findByTagsAndCity(tags, cityId);
-        if (response.error) return res.status(response.statusCode).send(response);
-        return res.status(200).send(response);
-    }
-
-    async getMissionsByIds(req, res) {
-        const { ids } = req.body;
-        let response = await this.service.findByIds(ids);
+        let response = await this.service.findByCity(cityId);
         if (response.error) return res.status(response.statusCode).send(response);
         return res.status(200).send(response);
     }

@@ -74,6 +74,27 @@ class UserController extends Controller {
         req.body.xp = req.body.xp += userPoints;
         return super.update(req, res);
     }
+
+    async addMissionsToUser(req, res) {
+        const { id, cityId } = req.params;
+        
+        let response = await this.service.addMissionsToUser(id, cityId);
+        if (response.error) {
+            return res.status(response.statusCode).send(response);
+        }
+        return res.status(200).send(response);
+    }
+
+    async increaseProgress(req, res) {
+        const { id, cityId } = req.params;
+        const { tags } = req.body;
+
+        let response = await this.service.increaseProgress(id, cityId, tags);
+        if (response.error) {
+            return res.status(response.statusCode).send(response);
+        }
+        return res.status(200).send(response);
+    }
 }
 
 export default new UserController(userService);

@@ -1,6 +1,9 @@
 import Service from './Service';
 import bcrypt from 'bcrypt';
 import MailService from './MailService';
+import missionServiceInstance from './MissionService';
+
+const missionService = missionServiceInstance;
 
 class UserService extends Service {
     constructor(model) {
@@ -119,6 +122,106 @@ class UserService extends Service {
                 error: true,
                 statusCode: 500,
                 error
+            };
+        }
+    }
+
+    async addMissionsToUser(id, cityId){
+        try {
+            if (!id) {
+                return {
+                    error: true,
+                    statusCode: 400,
+                    message: 'User ID is required.'
+                };
+            }
+
+            let user = await this.model.findById(id);
+
+            if (!cityId) {
+                return {
+                    error: true,
+                    statusCode: 400,
+                    message: 'City ID is required.'
+                };
+            }
+
+            const missions = await missionService.findByCity(cityId);
+
+            const newMissions = missions.filter(mission => 
+                !user.progress.some(progress => 
+                    progress.missionId.equals(mission._id)
+                )
+            );
+    
+            for (const mission of newMissions) {
+                user.progress.push({ missionId: mission._id, value: 0 });
+            }
+
+            return this.update(id, user);
+
+        } catch (error) {
+            console.log('error', error);
+            return {
+                error: true,
+                statusCode: 500,
+                message: error.message || 'Not able to add missions to user',
+                errors: error.errors
+            };
+        }
+    }
+
+    async increaseProgress(id, cityId, tags){
+        try {
+            const missionResponse = await missionService.findByTagsAndCity(tags, cityId);
+            if (missionResponse.error) {
+                return {
+                    error: true,
+                    statusCode: missionResponse.statusCode,
+                    message: missionResponse.message
+                };
+            }
+
+            const missionIdList = missionResponse.missionIdList;
+
+            if (!id) {
+                return {
+                    error: true,
+                    statusCode: 400,
+                    message: 'User ID is required.'
+                };
+            }
+
+            let user = await this.model.findById(id);
+
+            for(missionId of missionIdList){
+                if(!user.progress.some(progress => 
+                    progress.missionId.equals(missionId)
+                )){
+                    return {
+                        error: true,
+                        statusCode: 500,
+                        message: 'One or more invalid mission ids provided.'
+                    };
+                }
+            }
+
+            user.progress = user.progress.map(progress => {
+                if (missionIdList.includes(progress.missionId)) {
+                    progress.value += 1;  
+                }
+                return progress;
+            });
+    
+            return this.update(id, user);
+
+        } catch (error) {
+            console.log('error', error);
+            return {
+                error: true,
+                statusCode: 500,
+                message: error.message || 'Not able to increase user mission progress',
+                errors: error.errors
             };
         }
     }

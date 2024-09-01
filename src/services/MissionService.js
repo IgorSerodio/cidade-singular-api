@@ -35,10 +35,12 @@ class MissionService extends Service {
             });
 
             if (missions.length > 0) {
+                const missionIdList = missions.map(mission => mission._id);
+
                 return {
                     error: false,
                     statusCode: 200,
-                    data: missions
+                    missionIdList
                 };
             } else {
                 return {
@@ -58,18 +60,18 @@ class MissionService extends Service {
         }
     }
 
-    async findByIds(ids) {
+    async findByCity(cityId) {
         try {
-            if (!Array.isArray(ids) || ids.length === 0) {
+            if (!cityId) {
                 return {
                     error: true,
                     statusCode: 400,
-                    message: 'IDs should be a non-empty array.'
+                    message: 'City ID is required.'
                 };
             }
 
             const missions = await this.model.find({
-                _id: { $in: ids }
+                city: cityId,
             });
 
             if (missions.length > 0) {
@@ -82,7 +84,7 @@ class MissionService extends Service {
                 return {
                     error: true,
                     statusCode: 404,
-                    message: 'No missions found with the provided IDs.'
+                    message: 'No missions found with the provided city.'
                 };
             }
         } catch (error) {
@@ -97,4 +99,8 @@ class MissionService extends Service {
     }
 }
 
-export default MissionService;
+const missionServiceInstance = new MissionService(
+    new Mission().getInstance()
+);
+
+export default missionServiceInstance;

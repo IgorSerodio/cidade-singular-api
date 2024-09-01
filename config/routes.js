@@ -31,6 +31,8 @@ export default (server) => {
     server.delete('/user/:id', UserMiddleware.authorize(userTypes.ADMIN), UserController.delete);
     server.post('/user/recovery/:email', UserController.recovery);
     server.put('/user/addxp/:id', UserController.addXp);
+    server.put('/user/:id/add-missions/:cityId', UserMiddleware.authorize(), UserController.addMissionsToUser);
+    server.put('/user/:id/increase-progress/:cityId', UserMiddleware.authorize(), UserController.increaseProgress);
 
     server.get('/review', ReviewController.getAll);
     server.post('/review', ReviewController.insert)
@@ -38,8 +40,7 @@ export default (server) => {
     server.delete('/review/:id', ReviewController.delete);
 
     server.get('/mission', MissionController.getAll);
-    server.get('/mission/:cityId', MissionController.getMissionByTagsAndCity);
-    server.get('/mission/many', MissionController.getMissionsByIds);
+    server.get('/mission/:cityId', MissionController.getMissionsByCity);
     server.post('/mission', MissionController.insert);
     server.put('/mission/:id', MissionController.update);
     server.delete('/mission/:id', MissionController.delete);
