@@ -33,6 +33,7 @@ export default (server) => {
     server.put('/user/addxp/:id', UserController.addXp);
     server.put('/user/:id/add-missions/:cityId', UserMiddleware.authorize(), UserController.addMissionsToUser);
     server.put('/user/:id/increase-progress/:cityId', UserMiddleware.authorize(), UserController.increaseProgress);
+    server.put('/user/:id/give-reward/:missionId', UserMiddleware.authorize(), UserController.giveReward);
 
     server.get('/review', ReviewController.getAll);
     server.post('/review', ReviewController.insert)

@@ -20,11 +20,15 @@ class User {
             missionId: {
                 type: mongoose.Types.ObjectId,
                 ref: 'mission',
-                required: true
+                required: true,
             },
             value: {
                 type: Number,
                 default: 0,
+            },
+            target: {
+                type: Number,
+                required: true,
             }
         });
         

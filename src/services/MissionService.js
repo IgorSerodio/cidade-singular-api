@@ -4,6 +4,30 @@ class MissionService extends Service {
     constructor(model) {
         super(model);
     }
+    
+    async findById(id) {
+        try {
+            let mission = await this.model.findById(id);
+            if (mission) {
+                return { error: false, mission};
+            } else {
+                return {
+                    error: true,
+                    statusCode: 404,
+                    message: 'mission not found.'
+                }
+            }
+
+        } catch (error) {
+            console.log('error', error);
+            return {
+                error: true,
+                statusCode: 500,
+                message: error.errmsg || 'Not able to find mission',
+                errors: error.errors
+            };
+        }
+    }
 
     async findByTagsAndCity(tags, cityId) {
         try {

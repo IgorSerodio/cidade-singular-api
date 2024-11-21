@@ -155,7 +155,7 @@ class UserService extends Service {
             );
     
             for (const mission of newMissions) {
-                user.progress.push({ missionId: mission._id, value: 0 });
+                user.progress.push({ missionId: mission._id, value: 0, target: mission.target});
             }
 
             return this.update(id, user);
@@ -194,6 +194,8 @@ class UserService extends Service {
 
             let user = await this.model.findById(id);
 
+            this.addMissionsToUser(id, cityId);
+
             for(missionId of missionIdList){
                 if(!user.progress.some(progress => 
                     progress.missionId.equals(missionId)
@@ -207,7 +209,7 @@ class UserService extends Service {
             }
 
             user.progress = user.progress.map(progress => {
-                if (missionIdList.includes(progress.missionId)) {
+                if (missionIdList.includes(progress.missionId) && progress.value < progress.target) {
                     progress.value += 1;  
                 }
                 return progress;
@@ -221,6 +223,45 @@ class UserService extends Service {
                 error: true,
                 statusCode: 500,
                 message: error.message || 'Not able to increase user mission progress',
+                errors: error.errors
+            };
+        }
+    }
+
+    async giveReward(id, missionId){
+
+        try{
+            if (!id) {
+                return {
+                    error: true,
+                    statusCode: 400,
+                    message: 'User ID is required.'
+                };
+            }
+
+            let user = await this.model.findById(id);
+
+            if (!missionId) {
+                return {
+                    error: true,
+                    statusCode: 400,
+                    message: 'Mission ID is required.'
+                };
+            }
+
+            let mission = (await missionService.findById(missionId)).mission;
+
+            if(!user.accessories.includes(mission.reward)){
+                user.accessories.push(mission.reward);
+                this.update(id, user);
+            }
+            
+        } catch (error) {
+            console.log('error', error);
+            return {
+                error: true,
+                statusCode: 500,
+                message: error.message || 'Not able to give reward to user',
                 errors: error.errors
             };
         }

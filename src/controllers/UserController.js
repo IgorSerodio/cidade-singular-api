@@ -95,6 +95,15 @@ class UserController extends Controller {
         }
         return res.status(200).send(response);
     }
+
+    async giveReward(req, res) {
+        const {id, missionId} = req.params;
+        let response = await this.service.giveReward(id, missionId);
+        if (response.error) {
+            return res.status(response.statusCode).send(response);
+        }
+        return res.status(200).send(response);
+    } 
 }
 
 export default new UserController(userService);
