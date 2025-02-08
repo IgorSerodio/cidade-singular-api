@@ -1,3 +1,4 @@
+import './setup.js'
 import './config/database';
 import server from './config/server';
 import config from 'config';
