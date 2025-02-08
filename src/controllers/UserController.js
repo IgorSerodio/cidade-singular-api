@@ -20,6 +20,9 @@ class UserController extends Controller {
         this.me = this.me.bind(this);
         this.addXp = this.addXp.bind(this);
         this.update = this.update.bind(this);
+        this.addMissionsToUser = this.addMissionsToUser.bind(this);
+        this.increaseProgress = this.increaseProgress.bind(this);
+        this.giveReward = this.giveReward.bind(this);
     }
 
     async createUser(req, res) {
