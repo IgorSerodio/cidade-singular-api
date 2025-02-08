@@ -1,4 +1,5 @@
 import Service from './Service';
+import Mission from '../models/Mission';
 
 class MissionService extends Service {
     constructor(model) {
