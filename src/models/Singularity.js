@@ -50,6 +50,10 @@ class Singularity {
                 enum: Object.keys(SingularityTypes),
                 required: true
             },
+            tags: {
+                type: [String],
+                default: []
+            },
             lat: Number,
             lng: Number
         }, { timestamps: true });
