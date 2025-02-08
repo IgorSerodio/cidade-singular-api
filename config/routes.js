@@ -11,6 +11,8 @@ import { userTypes } from '../src/models/User';
 export default (server) => {
 
     server.get('/', (req, res) => res.send('This API is running, baby!'));
+    server.get('/favicon.ico', (req, res) => res.status(204));
+    server.get('/favicon.png', (req, res) => res.status(204));
 
     server.get('/singularity', SingularityController.getAll);
     server.post('/singularity', UserMiddleware.authorize(userTypes.CURATOR), SingularityController.insert)
