@@ -19,7 +19,7 @@ class Mission {
                 type: [String],
                 default: []
             },
-            progress: {
+            target: {
                 type: Number,
                 required: true,
             },
