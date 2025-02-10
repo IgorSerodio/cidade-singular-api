@@ -157,7 +157,7 @@ class UserService extends Service {
             for (const mission of newMissions) {
                 user.progress.push({ missionId: mission._id, value: 0, target: mission.target});
             }
-            console.log(user);
+            
             return this.update(id, {progress: user.progress});
         } catch (error) {
             console.log('error', error);
