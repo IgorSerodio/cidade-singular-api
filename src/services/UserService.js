@@ -146,20 +146,19 @@ class UserService extends Service {
                 };
             }
 
-            const missions = await missionService.findByCity(cityId);
-
+            const missions = (await missionService.findByCity(cityId)).data;
+            
             const newMissions = missions.filter(mission => 
                 !user.progress.some(progress => 
                     progress.missionId.equals(mission._id)
                 )
             );
-    
+            
             for (const mission of newMissions) {
                 user.progress.push({ missionId: mission._id, value: 0, target: mission.target});
             }
-
-            return this.update(id, user);
-
+            console.log(user);
+            return this.update(id, {progress: user.progress});
         } catch (error) {
             console.log('error', error);
             return {

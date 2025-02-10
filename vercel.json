@@ -19,5 +19,6 @@
                 "OPTIONS"
             ]
         }
-    ]
+    ],
+    "installCommand": "npm install && npm install mongoose@5.11.13 --legacy-peer-deps && npm install mongoose-unique-validator@2.0.3 --legacy-peer-deps"
   }

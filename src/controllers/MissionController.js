@@ -7,7 +7,7 @@ class MissionController extends Controller {
 
     constructor(service) {
         super(service);
-        this.getMissionsByIds = this.getMissionsByCity.bind(this);
+        this.getMissionsByCity = this.getMissionsByCity.bind(this);
     }
 
     async getMissionsByCity(req, res) {

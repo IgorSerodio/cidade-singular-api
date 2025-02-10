@@ -43,7 +43,7 @@ export default (server) => {
     server.delete('/review/:id', ReviewController.delete);
 
     server.get('/mission', MissionController.getAll);
-    server.get('/mission/:cityId', MissionController.getMissionsByCity);
+    server.get('/mission/city/:cityId', MissionController.getMissionsByCity);
     server.post('/mission', MissionController.insert);
     server.put('/mission/:id', MissionController.update);
     server.delete('/mission/:id', MissionController.delete);

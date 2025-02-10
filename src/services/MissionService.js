@@ -4,6 +4,7 @@ import Mission from '../models/Mission';
 class MissionService extends Service {
     constructor(model) {
         super(model);
+        
     }
     
     async findById(id) {
