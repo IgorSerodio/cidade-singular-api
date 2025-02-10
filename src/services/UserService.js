@@ -252,8 +252,14 @@ class UserService extends Service {
 
             if(!user.accessories.includes(mission.reward)){
                 user.accessories.push(mission.reward);
-                this.update(id, user);
+                return this.update(id, {accessories: user.accessories});
             }
+
+            return {
+                error: true,
+                statusCode: 400,
+                message: 'User already have reward',
+            };
             
         } catch (error) {
             console.log('error', error);
