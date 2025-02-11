@@ -214,7 +214,7 @@ class UserService extends Service {
                 return progress;
             });
     
-            return this.update(id, user);
+            return this.update(id, {progress: progress});
 
         } catch (error) {
             console.log('error', error);
