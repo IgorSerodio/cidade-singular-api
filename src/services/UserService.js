@@ -172,17 +172,6 @@ class UserService extends Service {
 
     async increaseProgress(id, cityId, tags){
         try {
-            const missionResponse = await missionService.findByTagsAndCity(tags, cityId);
-            if (missionResponse.error) {
-                return {
-                    error: true,
-                    statusCode: missionResponse.statusCode,
-                    message: missionResponse.message
-                };
-            }
-
-            const missionIdList = missionResponse.missionIdList;
-
             if (!id) {
                 return {
                     error: true,
@@ -191,11 +180,27 @@ class UserService extends Service {
                 };
             }
 
-            let user = await this.model.findById(id);
+            let user = (await this.addMissionsToUser(id, cityId)).item;
 
-            this.addMissionsToUser(id, cityId);
+            const missionResponse = await missionService.findByTagsAndCity(tags, cityId);
+            if (missionResponse.error) {
+                if(missionResponse.error.statusCode == 404){
+                    return {
+                        error: false,
+                        statusCode: 202,
+                        item: user
+                    }
+                }
+                return {
+                    error: true,
+                    statusCode: missionResponse.statusCode,
+                    message: missionResponse.message
+                };
+            }
 
-            for(missionId of missionIdList){
+            const missionIdList = missionResponse.missionIdList.map(id => id.toString());
+
+            for(const missionId of missionIdList){
                 if(!user.progress.some(progress => 
                     progress.missionId.equals(missionId)
                 )){
@@ -207,9 +212,9 @@ class UserService extends Service {
                 }
             }
 
-            user.progress = user.progress.map(progress => {
-                if (missionIdList.includes(progress.missionId) && progress.value < progress.target) {
-                    progress.value += 1;  
+            const progress = user.progress.map((progress) => {
+                if (missionIdList.includes(progress.missionId.toString()) && progress.value < progress.target) {
+                    progress.value += 1;
                 }
                 return progress;
             });
