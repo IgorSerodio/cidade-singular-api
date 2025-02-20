@@ -170,8 +170,16 @@ class UserService extends Service {
         }
     }
 
-    async increaseProgress(id, cityId, tags){
+    async increaseProgress(id, cityId, tags, source){
         try {
+            if (!source) {
+                return {
+                    error: true,
+                    statusCode: 400,
+                    message: 'Progress source is required.'
+                };
+            }
+
             if (!id) {
                 return {
                     error: true,
@@ -213,8 +221,9 @@ class UserService extends Service {
             }
 
             const progress = user.progress.map((progress) => {
-                if (missionIdList.includes(progress.missionId.toString()) && progress.value < progress.target) {
+                if (missionIdList.includes(progress.missionId.toString()) && progress.value < progress.target && !progress.sources.includes(source)) {
                     progress.value += 1;
+                    progress.sources.push(source);
                 }
                 return progress;
             });

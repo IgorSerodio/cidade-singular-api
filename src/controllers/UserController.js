@@ -90,9 +90,9 @@ class UserController extends Controller {
 
     async increaseProgress(req, res) {
         const { id, cityId } = req.params;
-        const { tags } = req.body;
+        const { tags, source } = req.body;
 
-        let response = await this.service.increaseProgress(id, cityId, tags);
+        let response = await this.service.increaseProgress(id, cityId, tags, source);
         if (response.error) {
             return res.status(response.statusCode).send(response);
         }

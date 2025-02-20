@@ -75,6 +75,10 @@ class User {
                     target: {
                         type: Number,
                         required: true,
+                    },
+                    sources: {
+                        type: [String],
+                        default: [],
                     }
                 }],
                 default: []
