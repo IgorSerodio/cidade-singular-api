@@ -1,13 +1,16 @@
 import Service from './Service';
 import bcrypt from 'bcrypt';
 import MailService from './MailService';
-import missionServiceInstance from './MissionService';
 
-const missionService = missionServiceInstance;
 
 class UserService extends Service {
     constructor(model) {
         super(model);
+        this.missionService = null;
+    }
+
+    setMissionService(missionService) {
+        this.missionService = missionService;
     }
 
     async getAll(query) {
@@ -124,6 +127,13 @@ class UserService extends Service {
                 error
             };
         }
+    }
+
+    async removeMissionProgress(missionId) {
+        return await this.model.updateMany(
+            { "progress.missionId": missionId },
+            { $pull: { progress: { missionId } } }
+        );
     }
 
     async addMissionsToUser(id, cityId){

@@ -10,6 +10,7 @@ const userTypes = {
     'ADMIN': 'ADMIN',
     'MANAGER': 'MANAGER',
     'CURATOR': 'CURATOR',
+    'ENTREPRENEUR': 'ENTREPRENEUR',
     'VISITOR': 'VISITOR'
 };
 
@@ -60,6 +61,26 @@ class User {
             equipped: {
                 type: [String],
                 default: ["none", "none", "none"]
+            },
+            titles: {
+                type: [{
+                    type: mongoose.Types.ObjectId,
+                    ref: 'title',
+                }],
+                default: []
+            },
+            tickets: {
+                type: [{
+                    ticketId: {
+                        type: mongoose.Types.ObjectId,
+                        required: true,
+                        ref: 'ticket',
+                    },
+                    redeemable: {
+                        type: Boolean,
+                        default: true,
+                    },
+                }]
             },
             progress: {
                 type: [{

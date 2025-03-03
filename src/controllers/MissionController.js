@@ -1,7 +1,7 @@
 import Controller from './Controller';
-import missionServiceInstance from './../services/MissionService';
+import serviceContainer from './../services/ServiceContainer';
 
-const missionService = missionServiceInstance;
+const { missionService } = serviceContainer;
 
 class MissionController extends Controller {
 

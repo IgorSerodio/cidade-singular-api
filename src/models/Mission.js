@@ -1,6 +1,11 @@
 import mongoose, { Schema } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
+const RewardTypes = {
+    "ACCESSORY" : "ACCESSORY",
+    "TICKET" : "TICKET",
+    "TITLE" : "TITLE",
+};
 
 class Mission {
 
@@ -23,7 +28,19 @@ class Mission {
                 type: Number,
                 required: true,
             },
-            reward: String
+            reward: {
+                type: String,
+                required: true,
+            },
+            rewardType: {
+                type: String,
+                enum: Object.keys(RewardTypes),
+                required: true,
+            }, 
+            sponsor: {
+                type: mongoose.Types.ObjectId,
+                ref: 'user',
+            },
 
         }, { timestamps: true });
 

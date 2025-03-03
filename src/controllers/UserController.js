@@ -1,14 +1,11 @@
-import UserService from './../services/UserService';
 import Controller from './Controller';
-import { User } from './../models/User';
+import serviceContainer from './../services/ServiceContainer';
 import config from 'config';
 import crypto from 'crypto';
 
 import Uploads from '../services/Upload';
 
-const userService = new UserService(
-    new User().getInstance()
-);
+const { userService } = serviceContainer;
 
 class UserController extends Controller {
 

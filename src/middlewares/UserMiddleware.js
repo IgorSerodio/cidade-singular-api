@@ -58,6 +58,9 @@ class UserMiddleware {
             case userTypes.CURATOR:
                 result = userType === userTypes.ADMIN || userType === userTypes.MANAGER || userType === userTypes.CURATOR;
                 break;
+            case userTypes.ENTREPRENEUR:
+                    result = userType === userTypes.ADMIN || userType === userTypes.MANAGER || userType === userTypes.CURATOR || userType === userTypes.ENTREPRENEUR;
+                    break;
             case userTypes.VISITOR:
                 result = true;
         }

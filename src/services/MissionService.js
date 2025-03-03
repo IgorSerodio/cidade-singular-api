@@ -1,12 +1,42 @@
 import Service from './Service';
-import Mission from '../models/Mission';
 
 class MissionService extends Service {
     constructor(model) {
         super(model);
-        
+        this.userService = null;
     }
-    
+
+    setUserService(userService) {
+        this.userService = userService;
+    }
+
+    async delete(id) {
+        try {
+            await this.userService.removeMissionProgress(id);
+            
+            let item = await this.model.findByIdAndDelete(id);
+            if (!item) {
+                return {
+                    error: true,
+                    statusCode: 404,
+                    message: 'Mission not found',
+                };
+            }
+
+            return {
+                error: false,
+                deleted: true,
+                statusCode: 204,
+            };
+        } catch (error) {
+            return {
+                error: true,
+                statusCode: 500,
+                error,
+            };
+        }
+    }
+
     async findById(id) {
         try {
             let mission = await this.model.findById(id);
@@ -125,8 +155,4 @@ class MissionService extends Service {
     }
 }
 
-const missionServiceInstance = new MissionService(
-    new Mission().getInstance()
-);
-
-export default missionServiceInstance;
+export default MissionService;

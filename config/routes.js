@@ -44,7 +44,14 @@ export default (server) => {
 
     server.get('/mission', MissionController.getAll);
     server.get('/mission/city/:cityId', MissionController.getMissionsByCity);
-    server.post('/mission', MissionController.insert);
-    server.put('/mission/:id', MissionController.update);
-    server.delete('/mission/:id', MissionController.delete);
+    server.post('/mission', UserMiddleware.authorize(userTypes.ENTREPRENEUR), MissionController.insert);
+    server.put('/mission/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), MissionController.update);
+    server.delete('/mission/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), MissionController.delete);
+
+    router.get('/singularity-request/type/:type', UserMiddleware.authorize(userTypes.CURATOR), SingularityRequestController.getByType);
+    router.post('/singularity-request/', UserMiddleware.authorize(), SingularityRequestController.insert);
+
+    router.post('/title', UserMiddleware.authorize(userTypes.ENTREPRENEUR), TitleController.insert);
+    router.put('/title/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), TitleController.update);
+    router.delete('/title/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), TitleController.delete);
 }

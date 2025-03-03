@@ -1,0 +1,54 @@
+import mongoose, { Schema } from 'mongoose';
+import uniqueValidator from 'mongoose-unique-validator';
+
+import { SingularityTypes } from "./Singularity";
+
+class SingularityRequest {
+
+    initSchema() {
+        const schema = new Schema({
+            visitingHours: {
+                type: String,
+                required: true,
+            },
+            title: {
+                type: String,
+                required: true,
+            },
+            description: {
+                type: String,
+                required: true,
+            },
+            address: {
+                type: String,
+                required: true,
+            },
+            photos: {
+                type: [String],
+                default: []
+            },
+            creator: {
+                type: mongoose.Types.ObjectId,
+                required: true,
+                ref: 'user'
+            },
+            type: {
+                type: String,
+                enum: Object.keys(SingularityTypes),
+                required: true
+            },
+            tags: {
+                type: [String],
+                default: []
+            },
+        }, { timestamps: true });
+
+        schema.plugin(uniqueValidator);
+        mongoose.model('singularity_request', schema);
+    }
+
+    getInstance() {
+        this.initSchema();
+        return mongoose.model('singularity_request');
+    }
+}
