@@ -1,18 +1,14 @@
 import Service from './Service';
 
 class MissionService extends Service {
-    constructor(model) {
+    constructor(model, services) {
         super(model);
-        this.userService = null;
-    }
-
-    setUserService(userService) {
-        this.userService = userService;
+        this.services = services;
     }
 
     async delete(id) {
         try {
-            await this.userService.removeMissionProgress(id);
+            await this.services.userService.removeMissionProgress(id);
             
             let item = await this.model.findByIdAndDelete(id);
             if (!item) {

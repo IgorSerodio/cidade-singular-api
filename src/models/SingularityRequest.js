@@ -52,3 +52,5 @@ class SingularityRequest {
         return mongoose.model('singularity_request');
     }
 }
+
+export default SingularityRequest;

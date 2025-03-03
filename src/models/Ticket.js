@@ -28,3 +28,5 @@ class Ticket {
         return mongoose.model('ticket');
     }
 }
+
+export default Ticket;

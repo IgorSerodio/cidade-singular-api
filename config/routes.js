@@ -3,6 +3,9 @@ import CityController from '../src/controllers/CityController';
 import UserController from '../src/controllers/UserController';
 import ReviewController from '../src/controllers/ReviewController';
 import MissionController from '../src/controllers/MissionController';
+import SingularityRequestController from '../src/controllers/SingularityRequestController';
+import TitleController from '../src/controllers/TitleController';
+import TicketController from '../src/controllers/TicketController';
 
 
 import UserMiddleware from '../src/middlewares/UserMiddleware';
@@ -48,10 +51,10 @@ export default (server) => {
     server.put('/mission/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), MissionController.update);
     server.delete('/mission/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), MissionController.delete);
 
-    router.get('/singularity-request/type/:type', UserMiddleware.authorize(userTypes.CURATOR), SingularityRequestController.getByType);
-    router.post('/singularity-request/', UserMiddleware.authorize(), SingularityRequestController.insert);
+    server.get('/singularity-request/type/:type', UserMiddleware.authorize(userTypes.CURATOR), SingularityRequestController.getByType);
+    server.post('/singularity-request/', UserMiddleware.authorize(), SingularityRequestController.insert);
 
-    router.post('/title', UserMiddleware.authorize(userTypes.ENTREPRENEUR), TitleController.insert);
-    router.put('/title/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), TitleController.update);
-    router.delete('/title/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), TitleController.delete);
+    server.post('/title', UserMiddleware.authorize(userTypes.ENTREPRENEUR), TitleController.insert);
+    server.put('/title/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), TitleController.update);
+    server.delete('/title/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), TitleController.delete);
 }

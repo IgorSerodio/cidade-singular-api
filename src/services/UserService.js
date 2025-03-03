@@ -4,13 +4,10 @@ import MailService from './MailService';
 
 
 class UserService extends Service {
-    constructor(model) {
-        super(model);
-        this.missionService = null;
-    }
 
-    setMissionService(missionService) {
-        this.missionService = missionService;
+    constructor(model, services) {
+        super(model);
+        this.services = services;
     }
 
     async getAll(query) {
@@ -156,7 +153,7 @@ class UserService extends Service {
                 };
             }
 
-            const missions = (await missionService.findByCity(cityId)).data;
+            const missions = (await this.services.missionService.findByCity(cityId)).data;
             
             const newMissions = missions.filter(mission => 
                 !user.progress.some(progress => 
@@ -200,7 +197,7 @@ class UserService extends Service {
 
             let user = (await this.addMissionsToUser(id, cityId)).item;
 
-            const missionResponse = await missionService.findByTagsAndCity(tags, cityId);
+            const missionResponse = await this.services.missionService.findByTagsAndCity(tags, cityId);
             if (missionResponse.error) {
                 if(missionResponse.error.statusCode == 404){
                     return {
@@ -272,7 +269,7 @@ class UserService extends Service {
                 };
             }
 
-            let mission = (await missionService.findById(missionId)).mission;
+            let mission = (await this.services.missionService.findById(missionId)).mission;
 
             if(!user.accessories.includes(mission.reward)){
                 user.accessories.push(mission.reward);

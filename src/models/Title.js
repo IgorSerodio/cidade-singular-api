@@ -28,3 +28,5 @@ class Title {
         return mongoose.model('title');
     }
 }
+
+export default Title;

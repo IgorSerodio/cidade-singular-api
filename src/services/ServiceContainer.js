@@ -5,11 +5,8 @@ import Mission from './../models/Mission';
 
 class ServiceContainer {
     constructor() {
-        this.userService = new UserService(User);
-        this.missionService = new MissionService(Mission);
-
-        this.userService.setMissionService(this.missionService);
-        this.missionService.setUserService(this.userService);
+        this.userService = new UserService(new User().getInstance(), this);
+        this.missionService = new MissionService(new Mission().getInstance(), this);
     }
 }
 
