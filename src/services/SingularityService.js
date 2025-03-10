@@ -59,6 +59,26 @@ class SingularityService extends Service {
             };
         }
     }
+
+    async getByCreator(creatorId) {
+        try {
+            const singularities = await this.model.find({ creator: creatorId });
+
+            return {
+                error: false,
+                statusCode: 200,
+                data: singularities
+            };
+        } catch (error) {
+            console.log('error', error);
+            return {
+                error: true,
+                statusCode: 500,
+                message: error.errmsg || 'Not able to singularities',
+                errors: error.errors
+            };
+        }
+    }
 };
 
 export default SingularityService;

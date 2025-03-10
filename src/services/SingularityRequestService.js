@@ -23,6 +23,26 @@ class SingularityRequestService extends Service {
             };
         }
     }
+
+    async getByCreator(creator) {
+        try {
+            const items = await this.model.find({ creator });
+
+            return {
+                error: false,
+                statusCode: 200,
+                data: items,
+            };
+        } catch (error) {
+            return {
+                error: true,
+                statusCode: 500,
+                message: 'Error fetching singularity requests by creator',
+                errors: error,
+            };
+        }
+    }
+
 }
 
 export default SingularityRequestService;

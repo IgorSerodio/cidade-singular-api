@@ -15,6 +15,7 @@ class SingularityController extends Controller {
 
     constructor(service) {
         super(service);
+        this.getByCreator = this.getByCreator.bind(this)
     }
 
     async insert(req, res) {
@@ -41,6 +42,13 @@ class SingularityController extends Controller {
         return super.insert(req, res);
     }
 
+    async getByCreator(req, res) {
+        
+        const { creatorId } = req.params;
+        const singularities = await this.service.getByCreator(creatorId);
+        if (response.error) return res.status(response.statusCode).send(response);
+        return res.status(200).send(response);
+    }
 }
 
 export default new SingularityController(singularityService);

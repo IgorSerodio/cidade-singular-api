@@ -20,6 +20,8 @@ class UserController extends Controller {
         this.addMissionsToUser = this.addMissionsToUser.bind(this);
         this.increaseProgress = this.increaseProgress.bind(this);
         this.giveReward = this.giveReward.bind(this);
+        this.giveTicketOrTitle = this.giveTicketOrTitle.bind(this);
+        this.increaseProgressManually = this.increaseProgressManually.bind(this);
     }
 
     async createUser(req, res) {
@@ -104,6 +106,36 @@ class UserController extends Controller {
         }
         return res.status(200).send(response);
     } 
+
+    async giveTicketOrTitle(req, res) {
+        const {email, ticket, title} = req.query
+        let response;
+
+        if(ticket) {
+            response = await this.service.giveTicket(email);
+        } else if(title){
+            response = await this.service.giveTitle(email);
+        } else {
+            return res.status(400).send({ error: true, message: "É necessário fornecer um ticket ou um título." });
+        }
+
+        if (response.error) {
+            return res.status(response.statusCode).send(response);
+        }
+        return res.status(200).send(response);
+    }
+
+    async increaseProgressManually(req, res){
+        const { missionId } = req.params;
+        const { email } = req.body;
+
+        let response = await this.service.increaseProgressManually(email, missionId);
+
+        if (response.error) {
+            return res.status(response.statusCode).send(response);
+        }
+        return res.status(200).send(response);
+    }
 }
 
 export default new UserController(userService);

@@ -365,6 +365,80 @@ class UserService extends Service {
             };
         }
     }
+
+    async giveTicket(email, ticketId) {
+        try {
+            let user = await this.model.findOne({ email });
+
+            if (!user) {
+                return { error: true, statusCode: 404, message: 'Usuário não encontrado.' };
+            }
+
+            const ticketExists = user.tickets.some(ticket => ticket.ticketId.equals(ticketId));
+            if (ticketExists) {
+                return { error: true, statusCode: 400, message: 'Usuário já possui esse ticket.' };
+            }
+
+            user.tickets.push({ ticketId, redeemable: true });
+            await user.save();
+
+            return { error: false, statusCode: 200, message: 'Ticket adicionado com sucesso.' };
+        } catch (error) {
+            console.error("Erro ao dar ticket:", error);
+            return { error: true, statusCode: 500, message: 'Erro interno no servidor.', details: error };
+        }
+    }
+
+    async giveTitle(email, titleId) {
+        try {
+            let user = await this.model.findOne({ email });
+
+            if (!user) {
+                return { error: true, statusCode: 404, message: 'Usuário não encontrado.' };
+            }
+
+            const titleExists = user.titles.some(title => title.equals(titleId));
+            if (titleExists) {
+                return { error: true, statusCode: 400, message: 'Usuário já possui esse título.' };
+            }
+
+            user.titles.push(titleId);
+            await user.save();
+
+            return { error: false, statusCode: 200, message: 'Título adicionado com sucesso.' };
+        } catch (error) {
+            console.error("Erro ao dar título:", error);
+            return { error: true, statusCode: 500, message: 'Erro interno no servidor.', details: error };
+        }
+    }
+
+    async increaseProgressManually(email, missionId) {
+        try {
+            let user = await this.model.findOne({ email });
+
+            if (!user) {
+                return { error: true, statusCode: 404, message: 'Usuário não encontrado.' };
+            }
+
+            let missionProgress = user.progress.find(progress => progress.missionId.equals(missionId));
+
+            if (!missionProgress) {
+                return { error: true, statusCode: 404, message: 'Missão não encontrada no progresso do usuário.' };
+            }
+
+            if (missionProgress.value >= missionProgress.target) {
+                return { error: true, statusCode: 400, message: 'A missão já foi completada.' };
+            }
+
+            missionProgress.value += 1;
+            await user.save();
+
+            return { error: false, statusCode: 200, message: 'Progresso aumentado com sucesso.' };
+        } catch (error) {
+            console.error("Erro ao aumentar progresso manualmente:", error);
+            return { error: true, statusCode: 500, message: 'Erro interno no servidor.', details: error };
+        }
+    }
 }
 
 export default UserService;

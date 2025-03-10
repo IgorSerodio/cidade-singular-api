@@ -18,6 +18,7 @@ export default (server) => {
     server.get('/favicon.png', (req, res) => res.status(204));
 
     server.get('/singularity', SingularityController.getAll);
+    server.get('/singularity/:creator', SingularityController.getByCreator);
     server.post('/singularity', UserMiddleware.authorize(userTypes.CURATOR), SingularityController.insert)
     server.put('/singularity/:id', UserMiddleware.authorize(userTypes.CURATOR), SingularityController.update);
     server.delete('/singularity/:id', UserMiddleware.authorize(userTypes.CURATOR), SingularityController.delete);
@@ -38,7 +39,9 @@ export default (server) => {
     server.put('/user/addxp/:id', UserController.addXp);
     server.put('/user/:id/add-missions/:cityId', UserMiddleware.authorize(), UserController.addMissionsToUser);
     server.put('/user/:id/increase-progress/:cityId', UserMiddleware.authorize(), UserController.increaseProgress);
+    server.put('/user/increase-progress/:missionId', UserMiddleware.authorize(userTypes.ENTREPRENEUR), UserController.increaseProgressManually);
     server.put('/user/:id/reward/:missionId', UserMiddleware.authorize(), UserController.giveReward);
+    server.put('/user/give', UserMiddleware.authorize(userTypes.ENTREPRENEUR), UserController.giveTicketOrTitle)
 
     server.get('/review', ReviewController.getAll);
     server.post('/review', ReviewController.insert)
@@ -47,14 +50,23 @@ export default (server) => {
 
     server.get('/mission', MissionController.getAll);
     server.get('/mission/city/:cityId', MissionController.getMissionsByCity);
+    server.get('/mission/sponsor/:sponsor', MissionController.getMissionsBySponsor);
     server.post('/mission', UserMiddleware.authorize(userTypes.ENTREPRENEUR), MissionController.insert);
     server.put('/mission/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), MissionController.update);
     server.delete('/mission/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), MissionController.delete);
 
-    server.get('/singularity-request/type/:type', UserMiddleware.authorize(userTypes.CURATOR), SingularityRequestController.getByType);
+    server.get('/singularity-request/filter', UserMiddleware.authorize(userTypes.CURATOR), SingularityRequestController.getByTypeOrCreator);
     server.post('/singularity-request/', UserMiddleware.authorize(), SingularityRequestController.insert);
+    server.put('/singularity-request/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), SingularityRequestController.update);
+    server.delete('/singularity-request/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), SingularityRequestController.delete);
 
+    server.get('/title/:creatorId', TitleController.getTitlesByCreator);
     server.post('/title', UserMiddleware.authorize(userTypes.ENTREPRENEUR), TitleController.insert);
     server.put('/title/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), TitleController.update);
     server.delete('/title/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), TitleController.delete);
+
+    server.get('/ticket/:creatorId', TicketController.getTicketsByCreator);
+    server.post('/ticket', UserMiddleware.authorize(userTypes.ENTREPRENEUR), TicketController.insert);
+    server.put('/ticket/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), TicketController.update);
+    server.delete('/ticket/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), TicketController.delete);
 }

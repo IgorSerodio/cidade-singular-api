@@ -17,6 +17,11 @@ class Ticket {
                 required: true,
                 ref: 'user',
             },
+            singularity: {
+                type: mongoose.Types.ObjectId,
+                required: true,
+                ref: 'singularity',
+            },
         }, { timestamps: true });
 
         schema.plugin(uniqueValidator);

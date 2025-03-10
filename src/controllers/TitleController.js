@@ -1,14 +1,20 @@
 import Controller from './Controller';
-import TitleService from './../services/TitleService';
-import Title from './../models/Title';
+import serviceContainer from './../services/ServiceContainer';
 
-const titleService = new TitleService(
-    new Title().getInstance()
-);
+const { titleService } = serviceContainer;
 
 class TitleController extends Controller {
+
     constructor(service) {
         super(service);
+        this.getTitlesByCreator = this.getTitlesByCreator.bind(this);
+    }
+
+    async getTitlesByCreator(req, res) {
+        const { creatorId } = req.params; 
+
+        let response = await this.service.findByCreator(creatorId);
+        if (response.error) return res.status(response.statusCode).send(response);
     }
 }
 
