@@ -9,7 +9,7 @@ const singularityRequestService = new SingularityRequestService(
 class SingularityRequestController extends Controller {
     constructor(service) {
         super(service);
-        this.getByType = this.getByTypeOrCreator.bind(this);
+        this.getByTypeOrCreator = this.getByTypeOrCreator.bind(this);
     }
 
     async getByTypeOrCreator(req, res) {
@@ -18,9 +18,9 @@ class SingularityRequestController extends Controller {
         let response;
         
         if (type) {
-        response = await SingularityRequestService.getByType(type);
+            response = await this.service.getByType(type);
         } else if (creator) {
-        response = await SingularityRequestService.getByCreator(creator);
+            response = await this.service.getByCreator(creator);
         } else {
             return res.status(400).json({ message: 'No query parameters' });
         }

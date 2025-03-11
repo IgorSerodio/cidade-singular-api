@@ -22,6 +22,7 @@ class UserController extends Controller {
         this.giveReward = this.giveReward.bind(this);
         this.giveTicketOrTitle = this.giveTicketOrTitle.bind(this);
         this.increaseProgressManually = this.increaseProgressManually.bind(this);
+        this.redeemTicket = this.redeemTicket.bind(this);
     }
 
     async createUser(req, res) {
@@ -108,13 +109,16 @@ class UserController extends Controller {
     } 
 
     async giveTicketOrTitle(req, res) {
-        const {email, ticket, title} = req.query
+        const {email, type, itemId} = req.body;
         let response;
+        console.log(type);
 
-        if(ticket) {
-            response = await this.service.giveTicket(email);
-        } else if(title){
-            response = await this.service.giveTitle(email);
+        if(type == "ticket") {
+            let ticketId = itemId;
+            response = await this.service.giveTicket(email, ticketId);
+        } else if(type == "title"){
+            let titleId = itemId;
+            response = await this.service.giveTitle(email, titleId);
         } else {
             return res.status(400).send({ error: true, message: "É necessário fornecer um ticket ou um título." });
         }
@@ -130,6 +134,18 @@ class UserController extends Controller {
         const { email } = req.body;
 
         let response = await this.service.increaseProgressManually(email, missionId);
+
+        if (response.error) {
+            return res.status(response.statusCode).send(response);
+        }
+        return res.status(200).send(response);
+    }
+
+    async redeemTicket(req, res){
+        const { ticketId } = req.params;
+        const { email } = req.body;
+
+        let response = await this.service.redeemTicket(email, ticketId);
 
         if (response.error) {
             return res.status(response.statusCode).send(response);

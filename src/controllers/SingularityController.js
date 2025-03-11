@@ -15,12 +15,9 @@ class SingularityController extends Controller {
 
     constructor(service) {
         super(service);
-        this.getByCreator = this.getByCreator.bind(this)
     }
 
     async insert(req, res) {
-        req.body.creator = req.user.id;
-        req.body.city = req.user.city;
         if (req.body.photos) {
             const timestamp = Date.now();
 
@@ -40,14 +37,6 @@ class SingularityController extends Controller {
             req.body.photos = photos;
         };
         return super.insert(req, res);
-    }
-
-    async getByCreator(req, res) {
-        
-        const { creatorId } = req.params;
-        const singularities = await this.service.getByCreator(creatorId);
-        if (response.error) return res.status(response.statusCode).send(response);
-        return res.status(200).send(response);
     }
 }
 

@@ -24,7 +24,6 @@ class TitleService extends Service {
             };
         }
     }
-
 }
 
 export default TitleService;

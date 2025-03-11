@@ -374,12 +374,16 @@ class UserService extends Service {
                 return { error: true, statusCode: 404, message: 'Usuário não encontrado.' };
             }
 
+            if(!ticketId){
+                return { error: true, statusCode: 400, message: 'Id do ticket não fornecido.' };
+            }
+
             const ticketExists = user.tickets.some(ticket => ticket.ticketId.equals(ticketId));
             if (ticketExists) {
                 return { error: true, statusCode: 400, message: 'Usuário já possui esse ticket.' };
             }
 
-            user.tickets.push({ ticketId, redeemable: true });
+            user.tickets.push({ ticketId: ticketId, redeemable: true });
             await user.save();
 
             return { error: false, statusCode: 200, message: 'Ticket adicionado com sucesso.' };
@@ -395,6 +399,10 @@ class UserService extends Service {
 
             if (!user) {
                 return { error: true, statusCode: 404, message: 'Usuário não encontrado.' };
+            }
+
+            if(!titleId){
+                return { error: true, statusCode: 400, message: 'Id do título não fornecido.' };
             }
 
             const titleExists = user.titles.some(title => title.equals(titleId));
@@ -436,6 +444,34 @@ class UserService extends Service {
             return { error: false, statusCode: 200, message: 'Progresso aumentado com sucesso.' };
         } catch (error) {
             console.error("Erro ao aumentar progresso manualmente:", error);
+            return { error: true, statusCode: 500, message: 'Erro interno no servidor.', details: error };
+        }
+    }
+
+    async redeemTicket(email, ticketId) {
+        try {
+            let user = await this.model.findOne({ email });
+
+            if (!user) {
+                return { error: true, statusCode: 404, message: 'Usuário não encontrado.' };
+            }
+
+            let userTicket = user.tickets.find(ticket => ticket.ticketId.equals(ticketId));
+
+            if (!userTicket) {
+                return { error: true, statusCode: 404, message: 'Ticket não pertence ao usuário.' };
+            }
+
+            if (!userTicket.redeemable) {
+                return { error: true, statusCode: 400, message: 'Ticket já resgatado.' };
+            }
+
+            userTicket.redeemable = false;
+            await user.save();
+
+            return { error: false, statusCode: 200, message: 'Ticket Resgatado com sucesso.' };
+        } catch (error) {
+            console.error("Erro ao resgatar ticket:", error);
             return { error: true, statusCode: 500, message: 'Erro interno no servidor.', details: error };
         }
     }

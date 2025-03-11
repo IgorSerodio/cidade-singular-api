@@ -1,7 +1,10 @@
+import Ticket from './../models/Ticket';
+import TicketService from '../services/TicketService';
 import Controller from './Controller';
-import serviceContainer from './../services/ServiceContainer';
 
-const { ticketService } = serviceContainer;
+const ticketService = new TicketService(
+    new Ticket().getInstance()
+);
 
 class TicketController extends Controller {
 

@@ -1,7 +1,10 @@
+import Title from './../models/Title';
 import Controller from './Controller';
-import serviceContainer from './../services/ServiceContainer';
+import TitleService from '../services/TitleService';
 
-const { titleService } = serviceContainer;
+const  titleService = new TitleService(
+    new Title().getInstance()
+);
 
 class TitleController extends Controller {
 
@@ -15,6 +18,8 @@ class TitleController extends Controller {
 
         let response = await this.service.findByCreator(creatorId);
         if (response.error) return res.status(response.statusCode).send(response);
+
+        return res.status(200).send(response);
     }
 }
 

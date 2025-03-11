@@ -34,14 +34,10 @@ class SingularityService extends Service {
                 items = await this.model
                     .find(query)
                     .skip(skip)
-                    .limit(limit)
-                    .populate('creator')
-                    .populate('city');
+                    .limit(limit);
             } else {
                 items = await this.model
-                    .find(query)
-                    .populate('creator')
-                    .populate('city');
+                    .find(query);
             }
             let total = await this.model.count();
 
@@ -56,26 +52,6 @@ class SingularityService extends Service {
                 error: true,
                 statusCode: 500,
                 errors
-            };
-        }
-    }
-
-    async getByCreator(creatorId) {
-        try {
-            const singularities = await this.model.find({ creator: creatorId });
-
-            return {
-                error: false,
-                statusCode: 200,
-                data: singularities
-            };
-        } catch (error) {
-            console.log('error', error);
-            return {
-                error: true,
-                statusCode: 500,
-                message: error.errmsg || 'Not able to singularities',
-                errors: error.errors
             };
         }
     }

@@ -37,6 +37,11 @@ class SingularityRequest {
                 enum: Object.keys(SingularityTypes),
                 required: true
             },
+            city: {
+                type: mongoose.Types.ObjectId,
+                required: true,
+                ref: 'city'
+            },
             tags: {
                 type: [String],
                 default: []

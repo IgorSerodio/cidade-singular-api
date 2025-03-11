@@ -18,7 +18,6 @@ export default (server) => {
     server.get('/favicon.png', (req, res) => res.status(204));
 
     server.get('/singularity', SingularityController.getAll);
-    server.get('/singularity/:creator', SingularityController.getByCreator);
     server.post('/singularity', UserMiddleware.authorize(userTypes.CURATOR), SingularityController.insert)
     server.put('/singularity/:id', UserMiddleware.authorize(userTypes.CURATOR), SingularityController.update);
     server.delete('/singularity/:id', UserMiddleware.authorize(userTypes.CURATOR), SingularityController.delete);
@@ -41,7 +40,8 @@ export default (server) => {
     server.put('/user/:id/increase-progress/:cityId', UserMiddleware.authorize(), UserController.increaseProgress);
     server.put('/user/increase-progress/:missionId', UserMiddleware.authorize(userTypes.ENTREPRENEUR), UserController.increaseProgressManually);
     server.put('/user/:id/reward/:missionId', UserMiddleware.authorize(), UserController.giveReward);
-    server.put('/user/give', UserMiddleware.authorize(userTypes.ENTREPRENEUR), UserController.giveTicketOrTitle)
+    server.put('/user/give/:itemId', UserMiddleware.authorize(userTypes.ENTREPRENEUR), UserController.giveTicketOrTitle);
+    server.put('/user/redeem-ticket/:ticketId', UserMiddleware.authorize(userTypes.ENTREPRENEUR), UserController.redeemTicket);
 
     server.get('/review', ReviewController.getAll);
     server.post('/review', ReviewController.insert)

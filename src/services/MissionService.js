@@ -164,19 +164,12 @@ class MissionService extends Service {
                 sponsor: sponsor,
             });
 
-            if (missions.length > 0) {
-                return {
-                    error: false,
-                    statusCode: 200,
-                    data: missions
-                };
-            } else {
-                return {
-                    error: true,
-                    statusCode: 404,
-                    message: 'No missions found with the provided sponsor.'
-                };
-            }
+            return {
+                error: false,
+                statusCode: 200,
+                data: missions
+            };
+            
         } catch (error) {
             console.log('error', error);
             return {
