@@ -80,7 +80,8 @@ class User {
                         type: Boolean,
                         default: true,
                     },
-                }]
+                }],
+                default: [],
             },
             progress: {
                 type: [{

@@ -55,17 +55,19 @@ export default (server) => {
     server.put('/mission/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), MissionController.update);
     server.delete('/mission/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), MissionController.delete);
 
-    server.get('/singularity-request/filter', UserMiddleware.authorize(userTypes.CURATOR), SingularityRequestController.getByTypeOrCreator);
+    server.get('/singularity-request/filter', UserMiddleware.authorize(userTypes.ENTREPRENEUR), SingularityRequestController.getByTypeOrCreator);
     server.post('/singularity-request/', UserMiddleware.authorize(), SingularityRequestController.insert);
     server.put('/singularity-request/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), SingularityRequestController.update);
     server.delete('/singularity-request/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), SingularityRequestController.delete);
 
     server.get('/title/:creatorId', TitleController.getTitlesByCreator);
+    server.get('/title/user/:userId', TitleController.getTitlesByUser);
     server.post('/title', UserMiddleware.authorize(userTypes.ENTREPRENEUR), TitleController.insert);
     server.put('/title/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), TitleController.update);
     server.delete('/title/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), TitleController.delete);
 
     server.get('/ticket/:creatorId', TicketController.getTicketsByCreator);
+    server.get('/ticket/user/:userId', TicketController.getTicketsByUser);
     server.post('/ticket', UserMiddleware.authorize(userTypes.ENTREPRENEUR), TicketController.insert);
     server.put('/ticket/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), TicketController.update);
     server.delete('/ticket/:id', UserMiddleware.authorize(userTypes.ENTREPRENEUR), TicketController.delete);
