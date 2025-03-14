@@ -4,7 +4,6 @@ import { Singularity } from './../models/Singularity';
 import config from 'config';
 
 import Uploads from '../services/Upload';
-
 import crypto from 'crypto';
 
 const singularityService = new SingularityService(
@@ -18,7 +17,8 @@ class SingularityController extends Controller {
     }
 
     async insert(req, res) {
-        if (req.body.photos) {
+        const {fromRequest} = req.query;
+        if (req.body.photos && !req.query) {
             const timestamp = Date.now();
 
             var photos = [];
