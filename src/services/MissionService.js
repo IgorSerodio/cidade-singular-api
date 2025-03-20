@@ -10,28 +10,19 @@ class MissionService extends Service {
         try {
             await this.services.userService.removeMissionProgress(id);
             
-            let item = await this.model.findByIdAndDelete(id);
-            if (!item) {
-                return {
-                    error: true,
-                    statusCode: 404,
-                    message: 'Mission not found',
-                };
-            }
-
-            return {
-                error: false,
-                deleted: true,
-                statusCode: 204,
-            };
+            return super.delete(id);
+        
         } catch (error) {
+            console.log('error', error);
             return {
                 error: true,
                 statusCode: 500,
-                error,
+                message: error.errmsg || 'Not able to delete',
+                errors: error.errors
             };
         }
     }
+    
 
     async findById(id) {
         try {
