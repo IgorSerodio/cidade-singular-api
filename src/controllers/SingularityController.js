@@ -38,6 +38,29 @@ class SingularityController extends Controller {
         };
         return super.insert(req, res);
     }
+
+    async update(req, res) {
+        if(req.body.newPhotos){
+            const timestamp = Date.now();
+
+            var newPhotos = [];
+
+            await Promise.all(req.body.newPhotos.map((image) => {
+                const stamp = crypto
+                    .randomBytes(Math.ceil(5 / 2))
+                    .toString('hex')
+                    .slice(0, 5) + timestamp;
+                const filename = req.user.id + stamp + '.jpg';
+
+                newPhotos.push('https://' + config.get('S3_BUCKET') + '.s3.' + config.get('S3_REGION') + '.amazonaws.com/' + config.get('S3_FOLDER') + '/' + filename);
+                return Uploads.uploadFile(image, req.user.id, stamp);
+            }));
+
+            req.body.photos = [...req.body.photos, ...newPhotos];
+        }
+
+        return super.update(req, res);
+    }
 }
 
 export default new SingularityController(singularityService);
