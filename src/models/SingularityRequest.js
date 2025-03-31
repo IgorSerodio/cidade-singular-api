@@ -46,6 +46,18 @@ class SingularityRequest {
                 type: [String],
                 default: []
             },
+            maturity: {
+                type: Number,
+                default: 0,
+            },
+            email: {
+                type: String,
+                required: false,
+            },
+            phone: {
+                type: String,
+                required: false,
+            }
         }, { timestamps: true });
 
         schema.plugin(uniqueValidator);
